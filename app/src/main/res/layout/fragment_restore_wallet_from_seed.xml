@@ -5,47 +5,60 @@
 
   <data>
 
+    <import type="com.hsy.simplebitcoinwallet.landing.LandingActivity"/>
+
     <variable
       name="fragmentManager"
       type="android.support.v4.app.FragmentManager"/>
 
     <variable
       name="viewModel"
-      type="com.hsy.simplebitcoinwallet.landing.LandingViewModel"/>
+      type="com.hsy.simplebitcoinwallet.restore.RestoreWalletFromSeedViewModel"/>
 
   </data>
 
   <android.support.constraint.ConstraintLayout
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:splitMotionEvents="false"
-    tools:context=".landing.LandingFragment">
+    tools:context=".restore.RestoreWalletFromSeedFragment">
 
-    <android.support.v7.widget.AppCompatButton
-      android:id="@+id/createWalletBtn"
+    <TextView
+      android:id="@+id/mnemonic"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="40dp"
-      android:onClick="@{() -> viewModel.goToCreateWalletPage(fragmentManager)}"
-      android:text="@string/btn_create_wallet_with_mnemonic"
-      android:textAllCaps="false"
+      android:text="@{viewModel.mnemonic}"
+      android:textSize="14sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="create wallet"/>
+      tools:text="mnemonic"/>
 
     <android.support.v7.widget.AppCompatButton
-      android:id="@+id/restoreWalletBtn"
+      android:id="@+id/confirmBtn"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="40dp"
-      android:onClick="@{() -> viewModel.goToRestoreWalletPage(fragmentManager)}"
-      android:text="@string/btn_restore_wallet_with_mnemonic"
+      android:enabled="@{viewModel.confirmBtnEnabled}"
+      android:onClick="@{() -> viewModel.restore((LandingActivity) context)}"
+      android:text="@string/btn_confirm"
       android:textAllCaps="false"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/createWalletBtn"
-      tools:text="restore wallet"/>
+      app:layout_constraintTop_toBottomOf="@+id/mnemonic"
+      tools:text="confirm button"/>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+      style="?android:attr/progressBarStyleSmall"
+      android:layout_width="64dp"
+      android:layout_height="64dp"
+      android:visibility="@{viewModel.progressVisibility}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
 
   </android.support.constraint.ConstraintLayout>
 

@@ -7,6 +7,9 @@
 
   <string name="btn_confirm">confirm</string>
   <string name="btn_create_wallet_with_mnemonic">random mnemonic and create wallet</string>
+  <string name="btn_restore_wallet_with_mnemonic">restore wallet with your 12 words mnemonic</string>
+  <string name="restore_error">restore error, please try again</string>
   <string name="create_wallet_error">create error, please try again</string>
 
 </resources>
+

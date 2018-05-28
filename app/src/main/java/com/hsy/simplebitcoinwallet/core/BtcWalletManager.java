@@ -106,6 +106,17 @@ public class BtcWalletManager {
     });
   }
 
+  @NonNull
+  public Completable create(@NonNull String mnemonic, long creationTimeSecond) {
+    return Completable.create(emitter -> {
+      if (isValidMnemonic(mnemonic)) {
+        create(new DeterministicSeed(mnemonic, null, "", creationTimeSecond), emitter);
+      } else {
+        emitter.onError(new IllegalArgumentException("invalid mnemonic: " + mnemonic));
+      }
+    });
+  }
+
   @VisibleForTesting
   public static boolean isValidMnemonic(@NonNull String mnemonic) {
     try {

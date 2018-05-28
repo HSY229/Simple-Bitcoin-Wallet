@@ -7,6 +7,8 @@ import com.hsy.simplebitcoinwallet.R;
 import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.landing.create.CreateWalletFromSeedFragment;
 import com.hsy.simplebitcoinwallet.landing.create.CreateWalletFromSeedViewModel;
+import com.hsy.simplebitcoinwallet.restore.RestoreWalletFromSeedFragment;
+import com.hsy.simplebitcoinwallet.restore.RestoreWalletFromSeedViewModel;
 import com.hsy.simplebitcoinwallet.utils.ActivityUtils;
 
 public class LandingViewModel extends BaseViewModel {
@@ -21,6 +23,12 @@ public class LandingViewModel extends BaseViewModel {
   public void goToCreateWalletPage(@NonNull FragmentManager fragmentManager) {
     final CreateWalletFromSeedFragment fragment = CreateWalletFromSeedFragment.newInstance();
     fragment.setViewModel(new CreateWalletFromSeedViewModel(btcWalletManager));
+    ActivityUtils.replaceAndKeepOld(fragmentManager, fragment, R.id.contentFrame);
+  }
+
+  public void goToRestoreWalletPage(@NonNull FragmentManager fragmentManager) {
+    final RestoreWalletFromSeedFragment fragment = RestoreWalletFromSeedFragment.newInstance();
+    fragment.setViewModel(new RestoreWalletFromSeedViewModel(btcWalletManager));
     ActivityUtils.replaceAndKeepOld(fragmentManager, fragment, R.id.contentFrame);
   }
 
