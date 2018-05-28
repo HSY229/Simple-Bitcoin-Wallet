@@ -4,12 +4,22 @@
   <string name="empty" translatable="false"/>
 
   <string name="main_sync_progress_format">sync: %d/100</string>
+  <string name="main_tx_hash_format">Hash: %s</string>
+  <string name="main_tx_status_format">Status: %1$s (%2$d confirmations)</string>
+  <string name="main_from_address_format">From: %s</string>
+  <string name="main_to_address_format">To: %s</string>
+  <string name="main_fee_format">Fee: %s</string>
+
+  <string name="explore_testnet_url" translatable="false">https://testnet.blockchain.info</string>
+  <string name="explore_mainnet_url" translatable="false">https://blockchain.info</string>
 
   <string name="btn_confirm">confirm</string>
   <string name="btn_create_wallet_with_mnemonic">random mnemonic and create wallet</string>
   <string name="btn_restore_wallet_with_mnemonic">restore wallet with your 12 words mnemonic</string>
   <string name="restore_error">restore error, please try again</string>
   <string name="create_wallet_error">create error, please try again</string>
+  <string name="main_tx_received">transaction received</string>
+  <string name="main_tx_sent">transaction send</string>
 
 </resources>
 

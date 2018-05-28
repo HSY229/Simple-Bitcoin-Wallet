@@ -36,16 +36,4 @@ public final class ActivityUtils {
     transaction.addToBackStack(null);
     transaction.commitAllowingStateLoss();
   }
-
-  /**
-   * The {@code fragment} is replaced to the container view with id {@code frameId}. The operation
-   * is performed by the {@code fragmentManager}.
-   */
-  public static void replace(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, int frameId) {
-    checkNotNull(fragmentManager);
-    checkNotNull(fragment);
-    final FragmentTransaction transaction = fragmentManager.beginTransaction();
-    transaction.replace(frameId, fragment);
-    transaction.commitAllowingStateLoss();
-  }
 }

@@ -5,36 +5,71 @@
 
   <data>
 
+    <import type="android.view.View"/>
+
+    <import type="android.support.v4.widget.SwipeRefreshLayout"/>
+
     <variable
       name="viewModel"
       type="com.hsy.simplebitcoinwallet.main.MainViewModel"/>
 
   </data>
 
-  <android.support.constraint.ConstraintLayout
+  <android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/balance"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@{viewModel.balance}"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="123.43 BTC"/>
+    <com.hsy.simplebitcoinwallet.main.PushUpConstraintLayout
+      android:id="@+id/pushUpConstraintLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/syncProgress"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@{String.format(@string/main_sync_progress_format, viewModel.syncProgress)}"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/balance"
-      tools:text="sync: 1/100"/>
+      <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> viewModel.showMessage()}"
+        android:text="@{viewModel.balance}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="123.43 BTC"/>
 
-  </android.support.constraint.ConstraintLayout>
+      <TextView
+        android:id="@+id/syncProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{String.format(@string/main_sync_progress_format, viewModel.syncProgress)}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/balance"
+        tools:text="sync: 1/100"/>
+
+      <com.hsy.simplebitcoinwallet.main.ScrollChildSwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:onRefresh="@{viewModel}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/syncProgress"
+        app:refreshing="@{viewModel.showProgressBar}"
+        app:scrollUpChild="@{txsContainer}"
+        app:size="@{SwipeRefreshLayout.LARGE}">
+
+        <android.support.v7.widget.RecyclerView
+          android:id="@+id/txsContainer"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:paddingLeft="10dp"
+          android:paddingRight="10dp"
+          app:items="@{viewModel.items}"/>
+
+      </com.hsy.simplebitcoinwallet.main.ScrollChildSwipeRefreshLayout>
+
+    </com.hsy.simplebitcoinwallet.main.PushUpConstraintLayout>
+
+  </android.support.design.widget.CoordinatorLayout>
 
 </layout>
