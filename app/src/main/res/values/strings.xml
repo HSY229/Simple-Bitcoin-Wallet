@@ -1,3 +1,12 @@
 <resources>
   <string name="app_name">Simple Bitcoin Wallet</string>
+
+  <string name="empty" translatable="false"/>
+
+  <string name="main_sync_progress_format">sync: %d/100</string>
+
+  <string name="btn_confirm">confirm</string>
+  <string name="btn_create_wallet_with_mnemonic">random mnemonic and create wallet</string>
+  <string name="create_wallet_error">create error, please try again</string>
+
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="com.hsy.simplebitcoinwallet.landing.LandingActivity"/>
+
+    <variable
+      name="viewModel"
+      type="com.hsy.simplebitcoinwallet.landing.create.CreateWalletFromSeedViewModel"/>
+
+  </data>
+
+  <android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:splitMotionEvents="false"
+    tools:context=".landing.create.CreateWalletFromSeedFragment">
+
+    <TextView
+      android:id="@+id/mnemonic"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:text="@{viewModel.mnemonic}"
+      tools:text="This is your 12 words mnemonic code"/>
+
+    <android.support.v7.widget.AppCompatButton
+      android:id="@+id/confirmBtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="40dp"
+      android:enabled="@{viewModel.confirmBtnEnabled}"
+      android:onClick="@{() -> viewModel.createWallet((LandingActivity) context)}"
+      android:text="@string/btn_confirm"
+      android:textAllCaps="false"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:text="confirm"/>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+      style="?android:attr/progressBarStyleSmall"
+      android:layout_width="64dp"
+      android:layout_height="64dp"
+      android:visibility="@{viewModel.progressVisibility}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+  </android.support.constraint.ConstraintLayout>
+
+</layout>

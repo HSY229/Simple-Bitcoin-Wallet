@@ -4,14 +4,14 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".main.MainActivity">
+  tools:context=".landing.LandingActivity">
 
   <FrameLayout
     android:id="@+id/contentFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:splitMotionEvents="false"
-    tools:context=".main.MainActivity"
+    tools:context="com.hsy.bitcoin.main.MainActivity"
     tools:ignore="MergeRootFrame"
     tools:showIn="@layout/activity_main"/>
 
