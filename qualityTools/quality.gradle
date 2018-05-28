@@ -1,0 +1,22 @@
+apply plugin: 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    description 'check code standard'
+    group 'verification'
+
+    configFile rootProject.file('qualityTools/checkStyle.xml')
+
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    classpath = files()
+}
+
+checkstyle {
+    toolVersion '8.2'
+    ignoreFailures = false
+    showViolations = true
+}

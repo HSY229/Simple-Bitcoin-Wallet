@@ -17,6 +17,38 @@ It will find the other peers, and then sync the blockchain. It only records the 
 ## Where to get TestNet Bitcoin
 https://testnet.coinfaucet.eu/en
 
+## Config your Android Studio
+* Android Studio version 3.1.2
+* Gradle version 4.4
+* Android Plugin version 3.1.2
+* Android SDK Platform 27
+* Android SDK Build-Tools 27.0.3
+
+### Auto Format
+1. go to **Preferences** -> **Editor** -> **Code Style**
+2. click **Manage** button
+3. click **Import** button
+4. chose import from **Intellij IDEA code style XML**
+5. select the ```${rootProject}/qualityTools/intellij-java-google-style.xml``` file
+6. click the **Apply** button
+
+### CheckStyle plugin
+1. go to **Preferences** -> **Plugins**
+2. type ```CheckStyle-IDEA``` into search field
+3. press **Browse repositories**
+4. click the **Install** button of CheckStyle-IDEA plugin
+5. restart Android Studio
+6. go to **Other Settings** in **Preferences**
+7. At **Checkstyle** page, set **Google Checks** bundled to be active
+8. Select the **Scan Scope** to be **All files in project**
+
+## Coding style
+This project will follow [Google Java Style](https://google.github.io/styleguide/javaguide.html#s1-introduction). Use gradle command to check style.
+```
+gradle checkstyle
+```
+The report will put in ```/build/reports/checkstyle/checkstyle.html``` of each module.
+
 ## Bitcoin White paper
 https://bitcoincore.org/bitcoin.pdf
 
@@ -35,7 +67,7 @@ Thanks to [Bitcoin Wallet for Android](https://github.com/bitcoin-wallet/bitcoin
 ### License
 
 ```
-Copyright 2018-present, SimpleBitcoinWallet Contributors.
+Copyright 2018-present, Simple-Bitcoin-Wallet Contributors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
