@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="fragmentManager"
+      type="android.support.v4.app.FragmentManager"/>
+
+    <variable
+      name="viewModel"
+      type="com.hsy.simplebitcoinwallet.landing.LandingViewModel"/>
+
+  </data>
+
+  <android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:splitMotionEvents="false"
+    tools:context=".landing.LandingFragment">
+
+    <android.support.v7.widget.AppCompatButton
+      android:id="@+id/createWalletBtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="40dp"
+      android:onClick="@{() -> viewModel.goToCreateWalletPage(fragmentManager)}"
+      android:text="@string/btn_create_wallet_with_mnemonic"
+      android:textAllCaps="false"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="create wallet"/>
+
+  </android.support.constraint.ConstraintLayout>
+
+</layout>
