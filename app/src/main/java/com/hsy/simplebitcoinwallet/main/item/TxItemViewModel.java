@@ -58,6 +58,9 @@ public class TxItemViewModel extends BaseViewModel {
     return context.getString(BuildConfig.DEBUG ? R.string.explore_testnet_url : R.string.explore_mainnet_url);
   }
 
+  /**
+   * Set item of list.
+   */
   public void setItem(@NonNull Context context, @NonNull BtcTx tx) {
     checkIsSendOrNot(tx);
     checkToFromViewVisibility();

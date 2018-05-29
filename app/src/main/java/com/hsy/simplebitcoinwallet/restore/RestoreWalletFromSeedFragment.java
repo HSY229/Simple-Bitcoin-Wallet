@@ -18,6 +18,16 @@ import com.hsy.simplebitcoinwallet.databinding.FragmentRestoreWalletFromSeedBind
  */
 public class RestoreWalletFromSeedFragment extends BaseView<RestoreWalletFromSeedViewModel, FragmentRestoreWalletFromSeedBinding> {
 
+  /**
+   * Default and empty constructor.
+   */
+  public RestoreWalletFromSeedFragment() {
+    // Required empty public constructor
+  }
+
+  /**
+   * Create and initialize a new instance of this class.
+   */
   @NonNull
   public static RestoreWalletFromSeedFragment newInstance() {
     return new RestoreWalletFromSeedFragment();
@@ -25,9 +35,10 @@ public class RestoreWalletFromSeedFragment extends BaseView<RestoreWalletFromSee
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    binding = DataBindingUtil
-        .inflate(inflater, R.layout.fragment_restore_wallet_from_seed, container, false);
-    binding.setFragmentManager(getActivity().getSupportFragmentManager());
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_restore_wallet_from_seed, container, false);
+    if (getActivity() != null) {
+      binding.setFragmentManager(getActivity().getSupportFragmentManager());
+    }
     binding.setViewModel(viewModel);
     return binding.getRoot();
   }

@@ -10,8 +10,4 @@ public final class Constants {
   @NonNull
   public static final NetworkParameters NETWORK_PARAMETERS = BuildConfig.DEBUG ? TestNet3Params.get() : MainNetParams.get();
 
-  /**
-   * Number of confirmations until a transaction is fully confirmed.
-   */
-  public static final int MAX_NUM_CONFIRMATIONS = 6;
 }

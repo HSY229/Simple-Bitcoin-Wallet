@@ -62,6 +62,9 @@ public class BtcWalletManager {
     this.directory = directory;
   }
 
+  /**
+   * {@link BtcWalletManager} is a lazy singleton class. Using this method to get its instance.
+   */
   @NonNull
   public static BtcWalletManager getInstance(@NonNull Context context) {
     if (manager == null) {
@@ -95,6 +98,11 @@ public class BtcWalletManager {
     }
   }
 
+  /**
+   * Create the wallet from 12 words mnemonic.
+   *
+   * @param mnemonic is 12 words mnemonic which is defined in [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md).
+   */
   @NonNull
   public Completable create(@NonNull String mnemonic) {
     return Completable.create(emitter -> {
@@ -106,6 +114,11 @@ public class BtcWalletManager {
     });
   }
 
+  /**
+   * Restores the wallet from 12 words mnemonic and its first creation time.
+   *
+   * @param creationTimeSecond is the UNIX time, when the wallet(mnemonic) was originally created.
+   */
   @NonNull
   public Completable create(@NonNull String mnemonic, long creationTimeSecond) {
     return Completable.create(emitter -> {
@@ -115,16 +128,6 @@ public class BtcWalletManager {
         emitter.onError(new IllegalArgumentException("invalid mnemonic: " + mnemonic));
       }
     });
-  }
-
-  @VisibleForTesting
-  public static boolean isValidMnemonic(@NonNull String mnemonic) {
-    try {
-      MnemonicCode.INSTANCE.check(Splitter.on(" ").splitToList(mnemonic));
-      return true;
-    } catch (MnemonicException e) {
-      return false;
-    }
   }
 
   private void create(@NonNull DeterministicSeed seed, @NonNull CompletableEmitter emitter) {
@@ -167,6 +170,7 @@ public class BtcWalletManager {
     observable = initDownloadObservable();
 
     try {
+      //noinspection SpellCheckingInspection
       walletAppKit.setCheckpoints(assetManager.open("checkpoints-testnet.txt"));
     } catch (IOException e) {
       e.printStackTrace();
@@ -177,6 +181,26 @@ public class BtcWalletManager {
     Log.d(TAG, "call WalletAppKit#startAsync()");
   }
 
+  /**
+   * Checks the mnemonic is valid or not.
+   *
+   * @return {@code true} when mnemonic is 3, 6, 9, 12, 15, 18, 21, 24 words, and in the list of BIP39, otherwise {@code false}.
+   */
+  @VisibleForTesting
+  public static boolean isValidMnemonic(@NonNull String mnemonic) {
+    try {
+      MnemonicCode.INSTANCE.check(Splitter.on(" ").splitToList(mnemonic));
+      return true;
+    } catch (MnemonicException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Launch the exist wallet.
+   *
+   * @throws IllegalStateException when wallet is already launched.
+   */
   @NonNull
   public Completable launch() {
     return Completable.create(emitter -> {
@@ -209,6 +233,7 @@ public class BtcWalletManager {
         observable = initDownloadObservable();
 
         try {
+          //noinspection SpellCheckingInspection
           walletAppKit.setCheckpoints(assetManager.open("checkpoints-testnet.txt"));
           walletAppKit.setBlockingStartup(false);
         } catch (IOException e) {
@@ -247,6 +272,11 @@ public class BtcWalletManager {
     }
   }
 
+  /**
+   * Gets current wallet.
+   *
+   * @throws IllegalStateException when wallet is not launched.
+   */
   @NonNull
   public BtcWallet getCurrent() {
     if (walletAppKit != null) {
@@ -256,6 +286,9 @@ public class BtcWalletManager {
     }
   }
 
+  /**
+   * Closes the wallet. This method will block your thread.
+   */
   public void shutdown() {
     if (walletAppKit != null) {
       walletAppKit.stopAsync()

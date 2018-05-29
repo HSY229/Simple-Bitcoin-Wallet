@@ -13,15 +13,21 @@ import com.hsy.simplebitcoinwallet.databinding.FragmentLandingBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LandingFragment#newInstance} factory method to
+ * Use the {@link #newInstance()} factory method to
  * create an instance of this fragment.
  */
 public class LandingFragment extends BaseView<LandingViewModel, FragmentLandingBinding> {
 
+  /**
+   * Default and empty constructor.
+   */
   public LandingFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Create and initialize a new instance of this class.
+   */
   @NonNull
   public static LandingFragment newInstance() {
     return new LandingFragment();
@@ -29,16 +35,12 @@ public class LandingFragment extends BaseView<LandingViewModel, FragmentLandingB
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    binding = DataBindingUtil
-        .inflate(inflater, R.layout.fragment_landing, container, false);
-    binding.setFragmentManager(getActivity().getSupportFragmentManager());
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_landing, container, false);
+    if (getActivity() != null) {
+      binding.setFragmentManager(getActivity().getSupportFragmentManager());
+    }
     binding.setViewModel(viewModel);
     return binding.getRoot();
-  }
-
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
   }
 
 }

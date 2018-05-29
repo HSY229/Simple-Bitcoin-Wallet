@@ -23,6 +23,9 @@ public class BtcWallet {
     return walletAppKit.wallet().getBalance().toFriendlyString();
   }
 
+  /**
+   * Gets transactions of this wallet.
+   */
   @NonNull
   public List<BtcTx> getTxs() {
     final List<Transaction> transitions = walletAppKit.wallet()
@@ -34,6 +37,9 @@ public class BtcWallet {
     return result;
   }
 
+  /**
+   * Adds a listener called when transaction are received.
+   */
   public void addReceivedTxListener(@NonNull ReceivedTxListener listener) {
     walletAppKit.wallet()
         .addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
@@ -42,6 +48,9 @@ public class BtcWallet {
         });
   }
 
+  /**
+   * Adds a listener called when transaction are send.
+   */
   public void addSentTxListener(@NonNull SentTxListener listener) {
     walletAppKit.wallet().addCoinsSentEventListener((wallet, tx, prevBalance, newBalance) -> {
       Log.d(TAG, "balance: " + getBalance());

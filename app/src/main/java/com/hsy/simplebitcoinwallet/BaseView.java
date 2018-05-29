@@ -20,7 +20,7 @@ public abstract class BaseView<M extends BaseViewModel, T extends ViewDataBindin
   protected T binding;
 
   @NonNull
-  private Observable.OnPropertyChangedCallback snackBarCallback = new Observable.OnPropertyChangedCallback() {
+  private final Observable.OnPropertyChangedCallback snackBarCallback = new Observable.OnPropertyChangedCallback() {
     @Override
     public void onPropertyChanged(@NonNull Observable observable, int i) {
       final int messageRes = viewModel != null ? viewModel.getSnackBarMessageResId() : 0;

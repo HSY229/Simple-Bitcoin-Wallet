@@ -38,8 +38,8 @@ public class BtcTx {
 
   @NonNull
   public String getAddress() {
-    return isSent() ? WalletUtils.getToAddressOfSent(transaction, wallet).toString()
-        : WalletUtils.getWalletAddressOfReceived(transaction, wallet).toString();
+    return isSent() ? WalletUtils.getToAddressOfSent(transaction, wallet)
+        : WalletUtils.getWalletAddressOfReceived(transaction, wallet);
   }
 
   @Nullable
