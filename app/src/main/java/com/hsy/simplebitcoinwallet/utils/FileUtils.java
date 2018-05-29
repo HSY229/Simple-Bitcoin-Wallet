@@ -18,6 +18,13 @@ public class FileUtils {
     directoryOrFile.delete();
   }
 
+  /**
+   * Check is the file with specific extension is exist or not.
+   *
+   * @param directory is the folder path of that file.
+   * @param extension is the file extension of that file such as jpg and txt, etc.
+   * @return {@code true} when file is exist, otherwise {@code false}.
+   */
   public static boolean isExist(@NonNull File directory, @NonNull String extension) {
     if (!directory.exists()) {
       throw new RuntimeException(directory.getPath() + " is not exist");

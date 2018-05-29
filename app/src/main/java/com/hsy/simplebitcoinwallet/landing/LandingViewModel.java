@@ -20,12 +20,18 @@ public class LandingViewModel extends BaseViewModel {
     this.btcWalletManager = btcWalletManager;
   }
 
+  /**
+   * Launch the create wallet page.
+   */
   public void goToCreateWalletPage(@NonNull FragmentManager fragmentManager) {
     final CreateWalletFromSeedFragment fragment = CreateWalletFromSeedFragment.newInstance();
     fragment.setViewModel(new CreateWalletFromSeedViewModel(btcWalletManager));
     ActivityUtils.replaceAndKeepOld(fragmentManager, fragment, R.id.contentFrame);
   }
 
+  /**
+   * Launch the restore wallet page.
+   */
   public void goToRestoreWalletPage(@NonNull FragmentManager fragmentManager) {
     final RestoreWalletFromSeedFragment fragment = RestoreWalletFromSeedFragment.newInstance();
     fragment.setViewModel(new RestoreWalletFromSeedViewModel(btcWalletManager));

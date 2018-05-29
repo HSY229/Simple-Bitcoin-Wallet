@@ -3,6 +3,7 @@ package com.hsy.simplebitcoinwallet.main;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.hsy.simplebitcoinwallet.BaseBindingAdapter;
 import com.hsy.simplebitcoinwallet.R;
 import com.hsy.simplebitcoinwallet.core.BtcTx;
@@ -27,10 +28,12 @@ class TxListAdapter extends BaseBindingAdapter<BtcTx, TxItemBinding> {
   }
 
   @Override
-  protected void onBindItem(@NonNull TxItemBinding binding, @NonNull BtcTx transaction) {
+  protected void onBindItem(@Nullable TxItemBinding binding, @NonNull BtcTx transaction) {
     final TxItemViewModel viewModel = new TxItemViewModel();
     viewModel.setItem(context, transaction);
-    binding.setViewModel(viewModel);
-    binding.executePendingBindings();
+    if (binding != null) {
+      binding.setViewModel(viewModel);
+      binding.executePendingBindings();
+    }
   }
 }

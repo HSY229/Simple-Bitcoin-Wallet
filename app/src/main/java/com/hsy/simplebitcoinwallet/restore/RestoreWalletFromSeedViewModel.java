@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.hsy.simplebitcoinwallet.BR;
 import com.hsy.simplebitcoinwallet.BaseViewModel;
-import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.R;
+import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.landing.LandingActivity;
 import com.hsy.simplebitcoinwallet.main.MainActivity;
 import io.reactivex.disposables.Disposable;
@@ -45,18 +45,22 @@ public class RestoreWalletFromSeedViewModel extends BaseViewModel {
     }
   }
 
+  /**
+   * Launch main page when restore wallet successful, otherwise display the error message.
+   */
   public void restore(@NonNull LandingActivity landingActivity) {
     setConfirmBtnEnabled(false);
     setProgressVisibility(VISIBLE);
     restoreDisposable = btcWalletManager.create(mnemonic, creationTimeSecond)
         .subscribe(() -> {
-          setProgressVisibility(GONE);
-          MainActivity.startAndFinishCurrent(landingActivity);
-        }, throwable -> {
-          showSnackBarMessage(R.string.restore_error);
-          setProgressVisibility(GONE);
-          setConfirmBtnEnabled(true);
-        });
+              setProgressVisibility(GONE);
+              MainActivity.startAndFinishCurrent(landingActivity);
+            }, throwable -> {
+              showSnackBarMessage(R.string.restore_error);
+              setProgressVisibility(GONE);
+              setConfirmBtnEnabled(true);
+            }
+        );
   }
 
   @NonNull

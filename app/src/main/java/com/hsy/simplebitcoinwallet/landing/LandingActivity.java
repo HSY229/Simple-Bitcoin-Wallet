@@ -2,8 +2,8 @@ package com.hsy.simplebitcoinwallet.landing;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.R;
+import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.main.MainActivity;
 import com.hsy.simplebitcoinwallet.utils.ActivityUtils;
 

@@ -13,15 +13,21 @@ import com.hsy.simplebitcoinwallet.databinding.FragmentCreateWalletFromSeedBindi
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CreateWalletFromSeedFragment#newInstance} factory method to
+ * Use the {@link #newInstance()} factory method to
  * create an instance of this fragment.
  */
 public class CreateWalletFromSeedFragment extends BaseView<CreateWalletFromSeedViewModel, FragmentCreateWalletFromSeedBinding> {
 
+  /**
+   * Default and empty constructor.
+   */
   public CreateWalletFromSeedFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Create and initialize a new instance of this class.
+   */
   @NonNull
   public static CreateWalletFromSeedFragment newInstance() {
     return new CreateWalletFromSeedFragment();
@@ -29,15 +35,9 @@ public class CreateWalletFromSeedFragment extends BaseView<CreateWalletFromSeedV
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    binding = DataBindingUtil
-        .inflate(inflater, R.layout.fragment_create_wallet_from_seed, container, false);
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_wallet_from_seed, container, false);
     binding.setViewModel(viewModel);
     return binding.getRoot();
-  }
-
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
   }
 
   @Override

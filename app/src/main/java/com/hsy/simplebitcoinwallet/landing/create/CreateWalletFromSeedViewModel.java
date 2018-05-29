@@ -42,18 +42,23 @@ public class CreateWalletFromSeedViewModel extends BaseViewModel {
     }
   }
 
+  /**
+   * Launch main page and finish current page when create wallet successful,
+   * otherwise display the error message.
+   */
   public void createWallet(@NonNull LandingActivity activity) {
     setConfirmBtnEnabled(false);
     setProgressVisibility(VISIBLE);
     createDisposable = btcWalletManager.create(mnemonic)
         .subscribe(() -> {
-          setProgressVisibility(GONE);
-          MainActivity.startAndFinishCurrent(activity);
-        }, throwable -> {
-          showSnackBarMessage(R.string.create_wallet_error);
-          setProgressVisibility(GONE);
-          setConfirmBtnEnabled(true);
-        });
+              setProgressVisibility(GONE);
+              MainActivity.startAndFinishCurrent(activity);
+            }, throwable -> {
+              showSnackBarMessage(R.string.create_wallet_error);
+              setProgressVisibility(GONE);
+              setConfirmBtnEnabled(true);
+            }
+        );
   }
 
   @NonNull

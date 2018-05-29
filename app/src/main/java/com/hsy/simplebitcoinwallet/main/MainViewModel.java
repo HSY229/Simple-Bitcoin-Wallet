@@ -90,6 +90,9 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
     setShowProgressBar(false);
   }
 
+  /**
+   * Load the transactions and then update the list.
+   */
   public void loadTxs() {
     setShowProgressBar(true);
     items.clear();
@@ -136,7 +139,7 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
     return balance;
   }
 
-  public void setBalance(String balance) {
+  private void setBalance(String balance) {
     this.balance = balance;
     notifyPropertyChanged(BR.balance);
   }
@@ -146,6 +149,7 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
     return syncProgress;
   }
 
+  @SuppressWarnings("SameParameterValue")
   private void setSyncProgress(int syncProgress) {
     this.syncProgress = syncProgress;
     notifyPropertyChanged(BR.syncProgress);
