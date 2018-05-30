@@ -3,6 +3,7 @@ package com.hsy.simplebitcoinwallet.main;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import com.hsy.simplebitcoinwallet.BR;
@@ -12,6 +13,9 @@ import com.hsy.simplebitcoinwallet.core.BtcTx;
 import com.hsy.simplebitcoinwallet.core.BtcWallet.ReceivedTxListener;
 import com.hsy.simplebitcoinwallet.core.BtcWallet.SentTxListener;
 import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
+import com.hsy.simplebitcoinwallet.main.send.SendCoinFragment;
+import com.hsy.simplebitcoinwallet.main.send.SendCoinViewModel;
+import com.hsy.simplebitcoinwallet.utils.ActivityUtils;
 import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -53,6 +57,15 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
     showSnackBarMessage(R.string.main_tx_received);
   }
 
+  /**
+   * Launch send coin page.
+   */
+  public void launchSendCoinPage(@NonNull FragmentManager fragmentManager) {
+    final SendCoinFragment fragment = SendCoinFragment.newInstance();
+    fragment.setViewModel(new SendCoinViewModel());
+    ActivityUtils.replaceAndKeepOld(fragmentManager, fragment, R.id.contentFrame);
+  }
+
   @NonNull
   @Bindable
   public List<BtcTx> getItems() {
@@ -84,8 +97,6 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
     if (syncDisposable != null && !syncDisposable.isDisposed()) {
       syncDisposable.dispose();
     }
-
-    btcWalletManager.shutdown();
     this.adapter = null;
     setShowProgressBar(false);
   }
