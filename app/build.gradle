@@ -103,4 +103,3 @@ dependencies {
     // bitcoinj
     implementation 'org.bitcoinj:bitcoinj-core:0.14.7'
 }
-

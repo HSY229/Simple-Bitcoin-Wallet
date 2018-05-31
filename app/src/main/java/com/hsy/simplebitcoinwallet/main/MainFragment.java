@@ -60,6 +60,9 @@ public class MainFragment extends BaseView<MainViewModel, FragmentMainBinding> {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+    if (getActivity() != null) {
+      binding.setFragmentManager(getActivity().getSupportFragmentManager());
+    }
     binding.setViewModel(viewModel);
     return binding.getRoot();
   }

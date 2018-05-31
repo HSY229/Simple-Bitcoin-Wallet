@@ -14,7 +14,9 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
-    <activity android:name=".landing.LandingActivity">
+    <activity
+      android:configChanges="keyboard|keyboardHidden"
+      android:name=".landing.LandingActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -22,7 +24,9 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".main.MainActivity"/>
+    <activity
+      android:configChanges="keyboard|keyboardHidden"
+      android:name=".main.MainActivity"/>
 
   </application>
 

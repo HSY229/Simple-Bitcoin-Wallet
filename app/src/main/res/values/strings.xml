@@ -9,6 +9,8 @@
   <string name="main_from_address_format">From: %s</string>
   <string name="main_to_address_format">To: %s</string>
   <string name="main_fee_format">Fee: %s</string>
+  <string name="main_tx_received">transaction received</string>
+  <string name="main_tx_sent">transaction send</string>
 
   <string name="explore_testnet_url" translatable="false">https://testnet.blockchain.info</string>
   <string name="explore_mainnet_url" translatable="false">https://blockchain.info</string>
@@ -16,10 +18,20 @@
   <string name="btn_confirm">confirm</string>
   <string name="btn_create_wallet_with_mnemonic">random mnemonic and create wallet</string>
   <string name="btn_restore_wallet_with_mnemonic">restore wallet with your 12 words mnemonic</string>
+
   <string name="restore_error">restore error, please try again</string>
   <string name="create_wallet_error">create error, please try again</string>
-  <string name="main_tx_received">transaction received</string>
-  <string name="main_tx_sent">transaction send</string>
+
+  <string name="send_coin_page_title">Send Coin</string>
+  <string name="send_coin_to_address_hint">To Address</string>
+  <string name="send_coin_amount_hint">Amount</string>
+  <string name="send_coin_cancel_btn">cancel</string>
+  <string name="send_coin_confirm_btn">confirm</string>
+  <string name="send_coin_send_done">Send coin done</string>
+  <string name="send_coin_failed">Send coin failed</string>
+  <string name="send_coin_invalid_to_address">Invalid to address</string>
+  <string name="send_coin_not_enough_balance">Balance is not enough</string>
+  <string name="send_coin_invalid_amount">Invalid amount</string>
 
 </resources>
 
