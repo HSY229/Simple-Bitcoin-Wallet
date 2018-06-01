@@ -25,13 +25,15 @@
   <string name="send_coin_page_title">Send Coin</string>
   <string name="send_coin_to_address_hint">To Address</string>
   <string name="send_coin_amount_hint">Amount</string>
-  <string name="send_coin_cancel_btn">cancel</string>
+  <string name="send_coin_fee_hint">Fee</string>
+  <string name="send_coin_cancel_btn">@android:string/cancel</string>
   <string name="send_coin_confirm_btn">confirm</string>
   <string name="send_coin_send_done">Send coin done</string>
   <string name="send_coin_failed">Send coin failed</string>
   <string name="send_coin_invalid_to_address">Invalid to address</string>
   <string name="send_coin_not_enough_balance">Balance is not enough</string>
   <string name="send_coin_invalid_amount">Invalid amount</string>
+  <string name="send_coin_invalid_fee">Invalid fee</string>
 
 </resources>
 

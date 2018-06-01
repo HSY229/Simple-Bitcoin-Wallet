@@ -25,6 +25,9 @@ public class SendCoinViewModel extends BaseViewModel {
   @NonNull
   private String amount = "";
 
+  @NonNull
+  private String fee = "";
+
   private boolean confirmBtnEnabled = true;
 
   @Nullable
@@ -54,7 +57,7 @@ public class SendCoinViewModel extends BaseViewModel {
     setConfirmBtnEnabled(false);
     Keyboard.hideSoftKeyboard(activity);
     sendCoinDisposable = btcWalletManager.getCurrent()
-        .send(toAddress, amount)
+        .send(toAddress, amount, fee)
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(btcTx -> showSnackBarMessage(R.string.send_coin_send_done))
         .observeOn(Schedulers.io())
@@ -67,6 +70,8 @@ public class SendCoinViewModel extends BaseViewModel {
                 showSnackBarMessage(R.string.send_coin_invalid_to_address);
               } else if (isInValidAmountException(throwable)) {
                 showSnackBarMessage(R.string.send_coin_invalid_amount);
+              } else if (isInValidFeeException(throwable)) {
+                showSnackBarMessage(R.string.send_coin_invalid_fee);
               } else if (isInsufficientMoneyException(throwable)) {
                 showSnackBarMessage(R.string.send_coin_not_enough_balance);
               } else {
@@ -83,6 +88,10 @@ public class SendCoinViewModel extends BaseViewModel {
 
   private boolean isInValidAmountException(@NonNull Throwable throwable) {
     return throwable instanceof IllegalArgumentException && throwable.getMessage().contains("invalid amount");
+  }
+
+  private boolean isInValidFeeException(@NonNull Throwable throwable) {
+    return throwable instanceof IllegalArgumentException && throwable.getMessage().contains("invalid fee");
   }
 
   private boolean isInsufficientMoneyException(@NonNull Throwable throwable) {
@@ -109,6 +118,17 @@ public class SendCoinViewModel extends BaseViewModel {
   public void setAmount(@NonNull String amount) {
     this.amount = amount;
     notifyPropertyChanged(BR.amount);
+  }
+
+  @Bindable
+  @NonNull
+  public String getFee() {
+    return fee;
+  }
+
+  public void setFee(@NonNull String fee) {
+    this.fee = fee;
+    notifyPropertyChanged(BR.fee);
   }
 
   @Bindable

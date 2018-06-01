@@ -68,7 +68,7 @@ public class BtcWallet {
    */
   @SuppressWarnings("JavaDoc")
   @NonNull
-  public Single<BtcTx> send(@NonNull String base58ToAddress, @NonNull String amountInSatoshis) {
+  public Single<BtcTx> send(@NonNull String base58ToAddress, @NonNull String amountInSatoshis, @NonNull String feeInSatoshis) {
     return Single.create(emitter -> {
       if (base58ToAddress.isEmpty()) {
         emitter.onError(new IllegalArgumentException("invalid address: " + base58ToAddress));
@@ -101,14 +101,33 @@ public class BtcWallet {
         return;
       }
 
+      if (feeInSatoshis.isEmpty()) {
+        emitter.onError(new IllegalArgumentException("invalid fee: " + feeInSatoshis));
+        return;
+      }
+
+      final Coin fee;
+      try {
+        fee = Coin.parseCoin(feeInSatoshis);
+      } catch (IllegalArgumentException e) {
+        emitter.onError(new IllegalArgumentException("invalid fee", e));
+        return;
+      }
+
+      if (fee.isZero() || fee.isNegative()) {
+        emitter.onError(new IllegalArgumentException("invalid fee: " + amountInSatoshis));
+        return;
+      }
+
       final Wallet wallet = walletAppKit.wallet();
       if (wallet.getBalance().isLessThan(value)) {
         emitter.onError(new InsufficientMoneyException(value));
         return;
       }
 
-      final SendRequest request = SendRequest.to(toAddress, value);
       try {
+        final SendRequest request = SendRequest.to(toAddress, value);
+        request.feePerKb = fee;
         wallet.completeTx(request);
         wallet.commitTx(request.tx);
         walletAppKit.peerGroup()
