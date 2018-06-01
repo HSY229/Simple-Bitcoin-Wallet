@@ -1,5 +1,7 @@
 package com.hsy.simplebitcoinwallet.main.send;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import android.app.Activity;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.utils.Keyboard;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.bitcoinj.core.InsufficientMoneyException;
 
 public class SendCoinViewModel extends BaseViewModel {
@@ -49,14 +52,17 @@ public class SendCoinViewModel extends BaseViewModel {
    */
   public void send(@NonNull FragmentManager fragmentManager, @NonNull Activity activity) {
     setConfirmBtnEnabled(false);
+    Keyboard.hideSoftKeyboard(activity);
     sendCoinDisposable = btcWalletManager.getCurrent()
         .send(toAddress, amount)
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSuccess(btcTx -> showSnackBarMessage(R.string.send_coin_send_done))
+        .observeOn(Schedulers.io())
+        .doOnSuccess(btcTx -> SECONDS.sleep(1))
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(btcTx -> {
-              showSnackBarMessage(R.string.send_coin_send_done);
               back(fragmentManager);
             }, throwable -> {
-              Keyboard.hideSoftKeyboard(activity);
               if (isInValidAddressException(throwable)) {
                 showSnackBarMessage(R.string.send_coin_invalid_to_address);
               } else if (isInValidAmountException(throwable)) {
