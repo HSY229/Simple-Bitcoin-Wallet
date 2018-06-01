@@ -10,7 +10,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import com.hsy.simplebitcoinwallet.BR;
 import com.hsy.simplebitcoinwallet.BaseViewModel;
 import com.hsy.simplebitcoinwallet.Constants;
@@ -30,9 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainViewModel extends BaseViewModel implements CompletableObserver, ReceivedTxListener, SentTxListener, OnOffsetChangedListener {
-
-  @NonNull
-  private static final String TAG = "main";
 
   @NonNull
   private String balance = "0.00000000 BTC";
@@ -130,23 +126,26 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
 
   @Override
   public void onComplete() {
-    Log.d(TAG, "launch wallet completed");
     btcWalletManager.getCurrent()
         .addReceivedTxListener(this);
     btcWalletManager.getCurrent()
         .addSentTxListener(this);
     setAddress(btcWalletManager.getCurrent().getAddress());
+    setBalance(btcWalletManager.getCurrent().getBalance());
     loadTxs();
   }
 
   @Override
   public void onReceivedTx(@NonNull BtcTx tx) {
     showSnackBarMessage(R.string.main_tx_received);
+    setAddress(btcWalletManager.getCurrent().getAddress());
+    setBalance(btcWalletManager.getCurrent().getBalance());
   }
 
   @Override
   public void onSentTx(@NonNull BtcTx tx) {
     showSnackBarMessage(R.string.main_tx_sent);
+    setBalance(btcWalletManager.getCurrent().getBalance());
   }
 
   @Override
@@ -208,6 +207,9 @@ public class MainViewModel extends BaseViewModel implements CompletableObserver,
     notifyPropertyChanged(BR.shouldHideTitleWhenCollapsed);
   }
 
+  /**
+   * The databinding method for binding the listener of {@link AppBarLayout}.
+   */
   @BindingAdapter(value = {"app:hideTitleWhenCollapsed", "app:offsetChangedListener"})
   public static void setHideTitleWhenCollapsed(@NonNull AppBarLayout appBarLayout, boolean isBinding, @NonNull OnOffsetChangedListener listener) {
     if (isBinding) {

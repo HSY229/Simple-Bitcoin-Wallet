@@ -31,6 +31,9 @@ public class BtcWallet {
     return walletAppKit.wallet().getBalance().toFriendlyString();
   }
 
+  /**
+   * Gets the current address for receiving money.
+   */
   @NonNull
   public String getAddress() {
     return walletAppKit.wallet()
