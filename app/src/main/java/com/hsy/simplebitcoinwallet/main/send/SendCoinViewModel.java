@@ -22,6 +22,8 @@ public class SendCoinViewModel extends BaseViewModel {
   @NonNull
   private String amount = "";
 
+  private boolean confirmBtnEnabled = true;
+
   @Nullable
   private Disposable sendCoinDisposable;
 
@@ -46,6 +48,7 @@ public class SendCoinViewModel extends BaseViewModel {
    * Send coin then close current page.
    */
   public void send(@NonNull FragmentManager fragmentManager, @NonNull Activity activity) {
+    setConfirmBtnEnabled(false);
     sendCoinDisposable = btcWalletManager.getCurrent()
         .send(toAddress, amount)
         .observeOn(AndroidSchedulers.mainThread())
@@ -63,6 +66,7 @@ public class SendCoinViewModel extends BaseViewModel {
               } else {
                 showSnackBarMessage(R.string.send_coin_failed);
               }
+              setConfirmBtnEnabled(true);
             }
         );
   }
@@ -99,5 +103,15 @@ public class SendCoinViewModel extends BaseViewModel {
   public void setAmount(@NonNull String amount) {
     this.amount = amount;
     notifyPropertyChanged(BR.amount);
+  }
+
+  @Bindable
+  public boolean isConfirmBtnEnabled() {
+    return confirmBtnEnabled;
+  }
+
+  private void setConfirmBtnEnabled(boolean confirmBtnEnabled) {
+    this.confirmBtnEnabled = confirmBtnEnabled;
+    notifyPropertyChanged(BR.confirmBtnEnabled);
   }
 }
