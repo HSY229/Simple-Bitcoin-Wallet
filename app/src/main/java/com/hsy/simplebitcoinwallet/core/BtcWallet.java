@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.bitcoinj.core.Address;
+import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
@@ -74,6 +75,14 @@ public class BtcWallet {
         return;
       }
 
+      final Address toAddress;
+      try {
+        toAddress = Address.fromBase58(Constants.NETWORK_PARAMETERS, base58ToAddress);
+      } catch (AddressFormatException e) {
+        emitter.onError(new IllegalArgumentException("invalid address: " + base58ToAddress, e));
+        return;
+      }
+
       if (amountInSatoshis.isEmpty()) {
         emitter.onError(new IllegalArgumentException("invalid amount: " + amountInSatoshis));
         return;
@@ -98,10 +107,7 @@ public class BtcWallet {
         return;
       }
 
-      final SendRequest request = SendRequest.to(
-          Address.fromBase58(Constants.NETWORK_PARAMETERS, base58ToAddress),
-          value
-      );
+      final SendRequest request = SendRequest.to(toAddress, value);
       try {
         wallet.completeTx(request);
         wallet.commitTx(request.tx);
