@@ -14,7 +14,6 @@ import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.wallet.SendRequest;
-import org.bitcoinj.wallet.Wallet;
 
 public class BtcWallet {
 
@@ -70,74 +69,63 @@ public class BtcWallet {
   @NonNull
   public Single<BtcTx> send(@NonNull String base58ToAddress, @NonNull String amountInSatoshis, @NonNull String feeInSatoshis) {
     return Single.create(emitter -> {
-      if (base58ToAddress.isEmpty()) {
+
+      if (isInvalidAddress(base58ToAddress)) {
         emitter.onError(new IllegalArgumentException("invalid address: " + base58ToAddress));
-        return;
-      }
-
-      final Address toAddress;
-      try {
-        toAddress = Address.fromBase58(Constants.NETWORK_PARAMETERS, base58ToAddress);
-      } catch (AddressFormatException e) {
-        emitter.onError(new IllegalArgumentException("invalid address: " + base58ToAddress, e));
-        return;
-      }
-
-      if (amountInSatoshis.isEmpty()) {
+      } else if (isInvalidCoinValue(amountInSatoshis)) {
         emitter.onError(new IllegalArgumentException("invalid amount: " + amountInSatoshis));
-        return;
-      }
-
-      final Coin value;
-      try {
-        value = Coin.parseCoin(amountInSatoshis);
-      } catch (IllegalArgumentException e) {
-        emitter.onError(new IllegalArgumentException("invalid amount", e));
-        return;
-      }
-
-      if (value.isZero() || value.isNegative()) {
-        emitter.onError(new IllegalArgumentException("invalid amount: " + amountInSatoshis));
-        return;
-      }
-
-      if (feeInSatoshis.isEmpty()) {
+      } else if (isInvalidCoinValue(feeInSatoshis)) {
         emitter.onError(new IllegalArgumentException("invalid fee: " + feeInSatoshis));
-        return;
-      }
-
-      final Coin fee;
-      try {
-        fee = Coin.parseCoin(feeInSatoshis);
-      } catch (IllegalArgumentException e) {
-        emitter.onError(new IllegalArgumentException("invalid fee", e));
-        return;
-      }
-
-      if (fee.isZero() || fee.isNegative()) {
-        emitter.onError(new IllegalArgumentException("invalid fee: " + amountInSatoshis));
-        return;
-      }
-
-      final Wallet wallet = walletAppKit.wallet();
-      if (wallet.getBalance().isLessThan(value)) {
-        emitter.onError(new InsufficientMoneyException(value));
-        return;
-      }
-
-      try {
-        final SendRequest request = SendRequest.to(toAddress, value);
-        request.feePerKb = fee;
-        wallet.completeTx(request);
-        wallet.commitTx(request.tx);
-        walletAppKit.peerGroup()
-            .broadcastTransaction(request.tx)
-            .broadcast();
-        emitter.onSuccess(new BtcTx(wallet, request.tx));
-      } catch (InsufficientMoneyException e) {
-        emitter.onError(e);
+      } else if (isNotEnoughBalance(amountInSatoshis, feeInSatoshis)) {
+        emitter.onError(new InsufficientMoneyException(
+            Coin.parseCoin(amountInSatoshis)
+                .add(Coin.parseCoin(feeInSatoshis))
+                .minus(walletAppKit.wallet().getBalance())
+        ));
+      } else {
+        try {
+          final SendRequest request = SendRequest.to(
+              Address.fromBase58(Constants.NETWORK_PARAMETERS, base58ToAddress),
+              Coin.parseCoin(amountInSatoshis)
+          );
+          request.feePerKb = Coin.parseCoin(feeInSatoshis);
+          walletAppKit.wallet().completeTx(request);
+          walletAppKit.wallet().commitTx(request.tx);
+          walletAppKit.peerGroup()
+              .broadcastTransaction(request.tx)
+              .broadcast();
+          emitter.onSuccess(new BtcTx(walletAppKit.wallet(), request.tx));
+        } catch (InsufficientMoneyException e) {
+          emitter.onError(e);
+        }
       }
     });
+  }
+
+  private boolean isInvalidAddress(@NonNull String base58ToAddress) {
+    try {
+      Address.fromBase58(Constants.NETWORK_PARAMETERS, base58ToAddress);
+      return base58ToAddress.isEmpty();
+    } catch (AddressFormatException e) {
+      return true;
+    }
+  }
+
+  private boolean isInvalidCoinValue(@NonNull String valueInSatoshis) {
+    try {
+      final Coin value = Coin.parseCoin(valueInSatoshis);
+      return valueInSatoshis.isEmpty() || value.isZero() || value.isNegative();
+    } catch (IllegalArgumentException e) {
+      return true;
+    }
+  }
+
+  private boolean isNotEnoughBalance(@NonNull String amountInSatoshis, @NonNull String feeInSatoshis) {
+    final Coin value = Coin.parseCoin(amountInSatoshis);
+    final Coin fee = Coin.parseCoin(feeInSatoshis);
+    return walletAppKit.wallet()
+        .getBalance()
+        .isLessThan(value.add(fee));
   }
 
   /**
