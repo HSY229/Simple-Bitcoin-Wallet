@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  >
 
   <data>
 
     <import type="android.view.View"/>
 
     <import type="android.support.v4.widget.SwipeRefreshLayout"/>
+
+    <variable
+      name="fragmentManager"
+      type="android.support.v4.app.FragmentManager"/>
 
     <variable
       name="viewModel"
@@ -24,7 +30,9 @@
       android:layout_width="match_parent"
       android:layout_height="174dp"
       android:fitsSystemWindows="true"
-      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      app:hideTitleWhenCollapsed="@{viewModel.shouldHideTitleWhenCollapsed}"
+      app:offsetChangedListener="@{viewModel}">
 
       <android.support.design.widget.CollapsingToolbarLayout
         android:id="@+id/toolbarLayout"
@@ -36,27 +44,57 @@
         app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
         app:contentScrim="?attr/colorPrimary"
         app:elevation="4dp"
-        app:expandedTitleMarginEnd="64dp"
-        app:expandedTitleMarginStart="48dp"
+        app:expandedTitleMarginEnd="16dp"
+        app:expandedTitleMarginStart="16dp"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         app:statusBarScrim="@android:color/transparent"
-        app:title="@{viewModel.balance}">
+        app:titleEnabled="false">
 
-        <ImageView
+        <android.support.constraint.ConstraintLayout
           android:layout_width="match_parent"
-          android:layout_height="200dp"
+          android:layout_height="match_parent"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
           android:background="@drawable/bg_tool_bar"
-          android:scaleType="centerCrop"
+          android:fitsSystemWindows="true"
           app:layout_collapseMode="parallax"
-          app:layout_collapseParallaxMultiplier="0.5"/>
+          app:layout_collapseParallaxMultiplier="0.5">
+
+          <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:text="@{viewModel.address}"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="address"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.balance}"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address"
+            tools:text="123.456 BTC"/>
+
+
+        </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.Toolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
-          android:fitsSystemWindows="false"
           android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-          app:layout_collapseMode="pin"/>
+          app:layout_collapseMode="pin"
+          app:layout_scrollFlags="scroll|exitUntilCollapsed"
+          app:title="@{viewModel.balance}"/>
 
       </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -106,6 +144,17 @@
       </android.support.v4.widget.NestedScrollView>
 
     </com.hsy.simplebitcoinwallet.main.ScrollChildSwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:layout_gravity="bottom|end"
+      android:elevation="6dp"
+      android:onClick="@{() -> viewModel.launchSendCoinPage(fragmentManager)}"
+      android:src="@android:drawable/ic_menu_send"
+      app:fabSize="normal"
+      app:pressedTranslationZ="12dp"/>
 
   </android.support.design.widget.CoordinatorLayout>
 
