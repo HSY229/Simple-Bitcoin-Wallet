@@ -35,5 +35,10 @@
   <string name="send_coin_invalid_amount">Invalid amount</string>
   <string name="send_coin_invalid_fee">Invalid fee</string>
 
+  <string name="menu_export">export</string>
+
+  <string name="export_to_mnemonic_title">Mnemonic</string>
+  <string name="export_to_mnemonic_confirm">@android:string/ok</string>
+
 </resources>
 

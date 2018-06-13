@@ -6,20 +6,27 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hsy.simplebitcoinwallet.BaseView;
 import com.hsy.simplebitcoinwallet.R;
 import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
 import com.hsy.simplebitcoinwallet.databinding.FragmentMainBinding;
+import com.hsy.simplebitcoinwallet.main.export.ExportToMnemonicDialogFragment;
 import com.hsy.simplebitcoinwallet.utils.ActivityUtils;
 import java.util.ArrayList;
 
@@ -28,6 +35,9 @@ import java.util.ArrayList;
  * Use the {@link #newInstance()} factory method to create an instance of this fragment.
  */
 public class MainFragment extends BaseView<MainViewModel, FragmentMainBinding> {
+
+  @NonNull
+  private static final String EXPORT_DIALOG_TAG = "EXPORT_TO_MNEMONIC";
 
   private TxListAdapter txListAdapter;
 
@@ -56,6 +66,12 @@ public class MainFragment extends BaseView<MainViewModel, FragmentMainBinding> {
     return new MainFragment();
   }
 
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
+  }
+
   @NonNull
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,8 +90,9 @@ public class MainFragment extends BaseView<MainViewModel, FragmentMainBinding> {
     setupListAdapter();
     setupRefreshLayout();
     txListAdapter.notifyDataSetChanged();
-    if (viewModel != null) {
-      viewModel.start(binding.txsContainer.getAdapter());
+    final Adapter adapter = binding.txsContainer.getAdapter();
+    if (viewModel != null && adapter != null) {
+      viewModel.start(adapter);
     }
   }
 
@@ -108,6 +125,34 @@ public class MainFragment extends BaseView<MainViewModel, FragmentMainBinding> {
           ContextCompat.getColor(activity, R.color.colorAccent),
           ContextCompat.getColor(activity, R.color.colorPrimaryDark)
       );
+    }
+  }
+
+  @Override
+  public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    inflater.inflate(R.menu.main, menu);
+    super.onCreateOptionsMenu(menu, inflater);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.actionExport:
+        showExportDialog();
+        break;
+      default:
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  /**
+   * Launch the create wallet page.
+   */
+  private void showExportDialog() {
+    final FragmentActivity activity = getActivity();
+    if (activity != null) {
+      ExportToMnemonicDialogFragment.newInstance()
+          .show(activity.getSupportFragmentManager(), EXPORT_DIALOG_TAG);
     }
   }
 
