@@ -1,7 +1,10 @@
 package com.hsy.simplebitcoinwallet.core;
 
+import android.content.res.Resources.NotFoundException;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
+import com.google.common.base.Joiner;
 import com.hsy.simplebitcoinwallet.Constants;
 import io.reactivex.Single;
 import java.math.BigDecimal;
@@ -22,8 +25,30 @@ public class BtcWallet {
   @NonNull
   private final WalletAppKit walletAppKit;
 
-  BtcWallet(@NonNull WalletAppKit walletAppKit) {
+  @VisibleForTesting
+  public BtcWallet(@NonNull WalletAppKit walletAppKit) {
     this.walletAppKit = walletAppKit;
+  }
+
+  /**
+   * Gets mnemonic.
+   *
+   * @throws NotFoundException when
+   */
+  @NonNull
+  public String getMnemonic() {
+    try {
+      final List<String> mnemonic = walletAppKit.wallet()
+          .getKeyChainSeed()
+          .getMnemonicCode();
+      if (mnemonic == null) {
+        throw new NotFoundException();
+      } else {
+        return Joiner.on(" ").join(mnemonic);
+      }
+    } catch (Exception e) {
+      throw new NotFoundException(e.getMessage());
+    }
   }
 
   @NonNull
