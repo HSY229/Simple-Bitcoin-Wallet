@@ -1,8 +1,15 @@
 package com.hsy.simplebitcoinwallet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import android.content.res.Resources.NotFoundException;
+import com.hsy.simplebitcoinwallet.core.BtcWallet;
 import com.hsy.simplebitcoinwallet.core.BtcWalletManager;
+import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.wallet.DeterministicSeed;
+import org.bitcoinj.wallet.Wallet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -53,5 +60,23 @@ public class BtcWalletManagerTest {
 
     // assert
     assertThat(BtcWalletManager.isValidMnemonic(result)).isTrue();
+  }
+
+  @Test(expected = NotFoundException.class)
+  public void getMnemonic_shouldThrowExceptionWhenNoMnemonic() {
+    // arrange
+    final DeterministicSeed seed = mock(DeterministicSeed.class);
+    when(seed.getMnemonicCode()).thenReturn(null);
+
+    final Wallet wallet = mock(Wallet.class);
+    when(wallet.getKeyChainSeed()).thenReturn(seed);
+
+    final WalletAppKit walletAppKit = mock(WalletAppKit.class);
+    when(walletAppKit.wallet()).thenReturn(wallet);
+
+    final BtcWallet btcWallet = new BtcWallet(walletAppKit);
+
+    // act
+    btcWallet.getMnemonic();
   }
 }
